@@ -42,13 +42,21 @@ public class Order implements Comparable<Order> {
 
     @Override
     public int compareTo(Order o) {
-        int d = -Boolean.compare(isVIP, o.isVIP);
+        int d = compareVIPStatus(o);
         if (d != 0)
             return d;
-        d = (serialNum < o.serialNum)
+        d = compareSerialNumber(o);
+        return d;
+    }
+
+    private int compareSerialNumber(Order o) {
+        return (serialNum < o.serialNum)
                 ? -1
                 : ((serialNum > o.serialNum) ? 1 : 0);
-        return d;
+    }
+
+    private int compareVIPStatus(Order o) {
+        return -Boolean.compare(isVIP, o.isVIP);
     }
 
     public int getCustomerID() {
