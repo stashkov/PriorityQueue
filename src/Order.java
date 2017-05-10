@@ -30,7 +30,7 @@ public class Order implements Comparable<Order> {
         this.customerID = customerID;
         this.amount = amount;
         this.isVIP = customerID < 1000 ? true : false;
-        this.serialNum = serialNumGenerator.getAndIncrement();
+        this.serialNum = serialNumGenerator.getAndIncrement();  // TODO test this when apparoching MAX_VALUE
         this.current_timestamp = Instant.now();
     }
 

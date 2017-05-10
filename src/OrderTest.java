@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class OrderTest {
-    @Test
-    void compareTo() {
-    }
 
     @Test
     public void testOrderCorrectInstance() {
