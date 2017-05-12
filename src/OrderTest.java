@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.testng.Assert.*;
 
 public class OrderTest {
 
@@ -68,6 +67,16 @@ public class OrderTest {
         Order vip = new Order(5, 1);
         Order notVIP = new Order(4, 5);
         assertEquals(-1, vip.compareTo(notVIP));
+    }
+
+    @Test
+    public void testToStringReliability() {
+        try {
+            Order o = new Order(1, 5);
+            o.toString();
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
     }
 
 

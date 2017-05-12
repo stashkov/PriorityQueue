@@ -1,24 +1,24 @@
 public class Cart {
-    private final int CAPACITY;
+    private final int capacity;
     private int quantity;
     private boolean isFull = false;
 
     /**
      * Class represent a cart which capacity is restricted
      *
-     * @param CAPACITY how many items fits into a cart
+     * @param capacity how many items fits into a cart
      */
-    public Cart(int CAPACITY) {
-        if (CAPACITY < 1)
-            throw new IllegalArgumentException("CAPACITY cannot be < 1");
+    public Cart(int capacity) {
+        if (capacity < 1)
+            throw new IllegalArgumentException("capacity cannot be < 1");
 
-        this.CAPACITY = CAPACITY;
+        this.capacity = capacity;
         this.quantity = 0;
     }
 
-    public boolean isGonnaFit(int amount) {
+    public boolean isGoingToFitThenAdd(int amount) {
         add(amount);
-        if (quantity > CAPACITY) {
+        if (quantity > capacity) {
             remove(amount);
             this.isFull = true;
             return false;
@@ -27,8 +27,8 @@ public class Cart {
     }
 
     private void add(int amount) {
-        if (amount > this.CAPACITY)
-            throw new IllegalArgumentException(amount + " > " + this.CAPACITY);
+        if (amount > this.capacity)
+            throw new IllegalArgumentException(amount + " > " + this.capacity);
         quantity += amount;
     }
 

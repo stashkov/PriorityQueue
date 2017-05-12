@@ -1,3 +1,4 @@
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
 import java.time.Instant;
 
@@ -5,7 +6,6 @@ public class Order implements Comparable<Order> {
     private final int customerID;
     private final int amount;
     private final boolean isVIP;
-    // TODO remove serialNumber and sort by current_timestamp
     private final static AtomicLong serialNumGenerator = new AtomicLong(0L);
     private final long serialNum;
     private final Instant current_timestamp;
@@ -30,7 +30,7 @@ public class Order implements Comparable<Order> {
         this.customerID = customerID;
         this.amount = amount;
         this.isVIP = customerID < 1000 ? true : false;
-        this.serialNum = serialNumGenerator.getAndIncrement();  // TODO test this when apparoching MAX_VALUE
+        this.serialNum = serialNumGenerator.getAndIncrement();
         this.current_timestamp = Instant.now();
     }
 
@@ -49,13 +49,13 @@ public class Order implements Comparable<Order> {
         return d;
     }
 
-    private int compareSerialNumber(Order o) {
+    public int compareSerialNumber(Order o) {
         return (serialNum < o.serialNum)
                 ? -1
                 : ((serialNum > o.serialNum) ? 1 : 0);
     }
 
-    private int compareVIPStatus(Order o) {
+    public int compareVIPStatus(Order o) {
         return -Boolean.compare(isVIP, o.isVIP);
     }
 
@@ -76,6 +76,6 @@ public class Order implements Comparable<Order> {
     }
 
     public long getMillisecondsInQueue() {
-        return Instant.now().toEpochMilli() - this.current_timestamp.toEpochMilli();
+        return Duration.between(Instant.now(), this.current_timestamp).toMillis() / 1000;
     }
 }
