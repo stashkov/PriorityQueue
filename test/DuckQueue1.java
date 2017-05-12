@@ -1,4 +1,3 @@
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -9,7 +8,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class DuckQueue extends PriorityBlockingQueue<Order> {
+public class DuckQueue1 extends PriorityBlockingQueue<Order> {
     private Set<Integer> set = new HashSet<>();
     private Set<Integer> uniqueCustomers = Collections.synchronizedSet(set);
     private static AtomicInteger numberOfItemsInRegularQueue;
@@ -18,7 +17,7 @@ public class DuckQueue extends PriorityBlockingQueue<Order> {
     private static Instant lastOrderCameOn;
     private static Instant lastVIPOrderCameOn;
 
-    public DuckQueue() {
+    public DuckQueue1() {
         numberOfItemsInRegularQueue = new AtomicInteger(0);
         numberOfItemsInVIPQueue = new AtomicInteger(0);
         lastOrderFulfilledOn = Instant.now();
@@ -102,15 +101,15 @@ public class DuckQueue extends PriorityBlockingQueue<Order> {
     }
 
     public static void setLastOrderFulfilledOn(Instant lastOrderFulfilledOn) {
-        DuckQueue.lastOrderFulfilledOn = lastOrderFulfilledOn;
+        DuckQueue1.lastOrderFulfilledOn = lastOrderFulfilledOn;
     }
 
     public static void setLastOrderCameOn(Instant lastOrderCameOn) {
-        DuckQueue.lastOrderCameOn = lastOrderCameOn;
+        DuckQueue1.lastOrderCameOn = lastOrderCameOn;
     }
 
     public static void setLastVIPOrderCameOn(Instant lastVIPOrderCameOn) {
-        DuckQueue.lastVIPOrderCameOn = lastVIPOrderCameOn;
+        DuckQueue1.lastVIPOrderCameOn = lastVIPOrderCameOn;
     }
 
     public static long getSecondsBetweenFirstAndLastVIPOrder() {

@@ -8,12 +8,12 @@ import java.util.HashSet;
 
 import static org.testng.Assert.*;
 
-public class DuckQueueTest {
-    private DuckQueue q;
+public class DuckQueue1Test {
+    private DuckQueue1 q;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        q = new DuckQueue();
+        q = new DuckQueue1();
     }
 
     @AfterMethod
@@ -24,7 +24,7 @@ public class DuckQueueTest {
     @Test()
     public void testDuckCorrectInstance() {
         try {
-            new DuckQueue();
+            new DuckQueue1();
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -32,14 +32,14 @@ public class DuckQueueTest {
 
     @Test()
     public void testEmptyQueue() {
-        assertEquals(DuckQueue.getNumberOfItemsInRegularQueue(), 0);
+        assertEquals(DuckQueue1.getNumberOfItemsInRegularQueue(), 0);
     }
 
     @Test()
     public void testOneElement() {
         Order o = new Order(1, 6);
         q.addToQueue(o);
-        assertEquals(DuckQueue.getNumberOfItemsInVIPQueue(), 6);
+        assertEquals(DuckQueue1.getNumberOfItemsInVIPQueue(), 6);
     }
 
     @Test()
@@ -48,7 +48,7 @@ public class DuckQueueTest {
         Order o2 = new Order(2, 5);
         q.addToQueue(o1);
         q.addToQueue(o2);
-        assertEquals(DuckQueue.getNumberOfItemsInVIPQueue(), 10);
+        assertEquals(DuckQueue1.getNumberOfItemsInVIPQueue(), 10);
     }
 
     @Test()
@@ -57,7 +57,7 @@ public class DuckQueueTest {
         Order o2 = new Order(1, 6);
         q.addToQueue(o1);
         q.addToQueue(o2);
-        assertEquals(DuckQueue.getNumberOfItemsInVIPQueue(), 5);
+        assertEquals(DuckQueue1.getNumberOfItemsInVIPQueue(), 5);
     }
 
     @Test()
@@ -74,7 +74,7 @@ public class DuckQueueTest {
         Order o1 = new Order(1, 5);
         q.addToQueue(o1);
         q.removeFromQueue(o1);
-        assertEquals(DuckQueue.getNumberOfItemsInVIPQueue(), 0);
+        assertEquals(DuckQueue1.getNumberOfItemsInVIPQueue(), 0);
     }
 
     @Test()
@@ -84,7 +84,7 @@ public class DuckQueueTest {
         q.addToQueue(o1);
         q.addToQueue(o2);
         q.removeFromQueue(o1);
-        assertEquals(DuckQueue.getNumberOfItemsInVIPQueue(), 6);
+        assertEquals(DuckQueue1.getNumberOfItemsInVIPQueue(), 6);
     }
 
     @Test()
@@ -108,7 +108,7 @@ public class DuckQueueTest {
         Order o2 = new Order(10000, 10);
         q.addToQueue(o1);
         q.addToQueue(o2);
-        assertEquals(DuckQueue.getNumberOfItemsInRegularQueue(), 10);
+        assertEquals(DuckQueue1.getNumberOfItemsInRegularQueue(), 10);
     }
 
     @Test()
@@ -116,7 +116,7 @@ public class DuckQueueTest {
         Order o1 = new Order(10000, 5);
         q.addToQueue(o1);
         q.removeFromQueue(o1);
-        assertEquals(DuckQueue.getNumberOfItemsInRegularQueue(), 0);
+        assertEquals(DuckQueue1.getNumberOfItemsInRegularQueue(), 0);
     }
 
     @Test()
@@ -126,25 +126,25 @@ public class DuckQueueTest {
         q.addToQueue(o1);
         q.addToQueue(o2);
         q.removeFromQueue(o1);
-        assertEquals(DuckQueue.getNumberOfItemsInRegularQueue(), 6);
+        assertEquals(DuckQueue1.getNumberOfItemsInRegularQueue(), 6);
     }
 
     @Test()
     public void testGetLengthOfVIPQueueInSeconds(){
         Instant head = Instant.now();
         Instant vipTail = Instant.now().plusMillis(3000);
-        DuckQueue.setLastOrderFulfilledOn(head);
-        DuckQueue.setLastVIPOrderCameOn(vipTail);
-        assertEquals(DuckQueue.getSecondsBetweenFirstAndLastVIPOrder(), 3);
+        DuckQueue1.setLastOrderFulfilledOn(head);
+        DuckQueue1.setLastVIPOrderCameOn(vipTail);
+        assertEquals(DuckQueue1.getSecondsBetweenFirstAndLastVIPOrder(), 3);
     }
 
     @Test()
     public void testGetLengthOfQueueInSeconds(){
         Instant head = Instant.now();
         Instant tail = Instant.now().plusMillis(3000);
-        DuckQueue.setLastOrderFulfilledOn(head);
-        DuckQueue.setLastOrderCameOn(tail);
-        assertEquals(DuckQueue.getSecondsBetweenFirstAndLastOrder(), 3);
+        DuckQueue1.setLastOrderFulfilledOn(head);
+        DuckQueue1.setLastOrderCameOn(tail);
+        assertEquals(DuckQueue1.getSecondsBetweenFirstAndLastOrder(), 3);
     }
 
     @Test()
@@ -152,10 +152,10 @@ public class DuckQueueTest {
         Instant head = Instant.now().plusMillis(-10001);
         Instant tail = Instant.now().plusMillis(10001);
         Order o = new Order(20000, 20);
-        DuckQueue.setLastOrderFulfilledOn(head);
+        DuckQueue1.setLastOrderFulfilledOn(head);
         q.addToQueue(o);  // should be between 2 setters
-        DuckQueue.setLastOrderCameOn(tail);
-        float pointOnInterval = DuckQueue.getPointOnZeroOneIntervalBetweenHeadAndTail(o);
+        DuckQueue1.setLastOrderCameOn(tail);
+        float pointOnInterval = DuckQueue1.getPointOnZeroOneIntervalBetweenHeadAndTail(o);
         assertEquals(pointOnInterval, 0.5, 0.1);
     }
 
@@ -164,10 +164,10 @@ public class DuckQueueTest {
         Instant head = Instant.now().plusMillis(-10001);
         Instant tail = Instant.now().plusMillis(5001);
         Order o = new Order(20000, 20);
-        DuckQueue.setLastOrderFulfilledOn(head);
+        DuckQueue1.setLastOrderFulfilledOn(head);
         q.addToQueue(o);  // should be between 2 setters
-        DuckQueue.setLastOrderCameOn(tail);
-        float pointOnInterval = DuckQueue.getPointOnZeroOneIntervalBetweenHeadAndTail(o);
+        DuckQueue1.setLastOrderCameOn(tail);
+        float pointOnInterval = DuckQueue1.getPointOnZeroOneIntervalBetweenHeadAndTail(o);
         assertEquals(pointOnInterval, 0.3, 0.1);
     }
 
@@ -176,10 +176,10 @@ public class DuckQueueTest {
         Instant head = Instant.now().plusMillis(-10001);
         Instant tail = Instant.now().plusMillis(1000);
         Order o = new Order(20000, 20);
-        DuckQueue.setLastOrderFulfilledOn(head);
+        DuckQueue1.setLastOrderFulfilledOn(head);
         q.addToQueue(o);  // should be between 2 setters
-        DuckQueue.setLastOrderCameOn(tail);
-        float pointOnInterval = DuckQueue.getPointOnZeroOneIntervalBetweenHeadAndTail(o);
+        DuckQueue1.setLastOrderCameOn(tail);
+        float pointOnInterval = DuckQueue1.getPointOnZeroOneIntervalBetweenHeadAndTail(o);
         assertEquals(pointOnInterval, 0.1, 0.1);
     }
 

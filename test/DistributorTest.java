@@ -4,14 +4,12 @@ import org.testng.annotations.Test;
 
 import java.time.Instant;
 
-import static org.testng.Assert.*;
-
 public class DistributorTest {
-    private DuckQueue q;
+    private DuckQueue1 q;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        q = new DuckQueue();
+        q = new DuckQueue1();
     }
 
     @AfterMethod
@@ -23,9 +21,9 @@ public class DistributorTest {
         Instant head = Instant.now().plusMillis(-10001);
         Instant tail = Instant.now().plusMillis(1000);
         Order o = new Order(20000, 20);
-        DuckQueue.setLastOrderFulfilledOn(head);
+        DuckQueue1.setLastOrderFulfilledOn(head);
         q.addToQueue(o);  // should be between 2 setters
-        DuckQueue.setLastOrderCameOn(tail);
+        DuckQueue1.setLastOrderCameOn(tail);
         assertEquals(Distributor.getApproximateWaitTimeForOrder(o), 0);
     }
 
@@ -37,12 +35,12 @@ public class DistributorTest {
         Order o1 = new Order(5000, 20);
         Order o2 = new Order(5001, 20);
         Order o3 = new Order(5002, 20);
-        DuckQueue.setLastOrderFulfilledOn(head);
+        DuckQueue1.setLastOrderFulfilledOn(head);
         q.addToQueue(o);  // should be between 2 setters
         q.addToQueue(o1);
         q.addToQueue(o2);
         q.addToQueue(o3);
-        DuckQueue.setLastOrderCameOn(tail);
+        DuckQueue1.setLastOrderCameOn(tail);
         assertEquals(Distributor.getApproximateWaitTimeForOrder(o3), 300);
     }
 }

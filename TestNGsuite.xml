@@ -3,25 +3,25 @@
 
 <suite name="Suite1">
 
-    <test name="DuckQueue">
+    <test name="DuckQueue1">
         <classes>
-            <class name="DuckQueueTest"/>
+            <class name="DuckQueue1Test"/>
         </classes>
     </test>
 
-    <test name="Order">
+    <test name="com.example.jersey.Order">
         <classes>
-            <class name="OrderTest"/>
+            <class name="com.example.jersey.OrderTest"/>
         </classes>
     </test>
 
-    <test name="Cart">
+    <test name="com.example.jersey.Cart">
         <classes>
-            <class name="CartTest"/>
+            <class name="com.example.jersey.CartTest"/>
         </classes>
     </test>
 
-    <test name="Distributor">
+    <test name="com.example.jersey.Distributor">
         <classes>
             <class name="DistributorTest"/>
         </classes>
