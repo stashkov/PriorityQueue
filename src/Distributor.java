@@ -21,8 +21,6 @@ public class Distributor {
 
     public static int getApproximateWaitTimeForOrder(Order o) {
         float pointOnInterval = DuckQueue.getPointOnZeroOneIntervalBetweenHeadAndTail(o);
-        // TODO fix
-        if (pointOnInterval < 0.1 || pointOnInterval != pointOnInterval ) { pointOnInterval = 1;}
         int numberOfItemsInQueue = o.isVIP() ? DuckQueue.getNumberOfItemsInVIPQueue() : DuckQueue.getNumberOfItemsInEntireQueue();
         int secondsToWaitBetweenEachServing = 10; // 5 * 60
         int maximumNumberOfItemPerServing = 25;
