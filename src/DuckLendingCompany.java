@@ -20,6 +20,8 @@ public class DuckLendingCompany {
         queue.addToQueue(o6);
         queue.addToQueue(o7);
 
+        System.out.println(Distributor.getApproximateWaitTimeForOrder(o7));
+
         while(!queue.isEmpty()){
             joe.pickUpOrders();
             sleep_five_sec();
@@ -29,7 +31,7 @@ public class DuckLendingCompany {
 
     private static void sleep_five_sec() {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(10000);  // 6000 * 10 * 5
         }catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

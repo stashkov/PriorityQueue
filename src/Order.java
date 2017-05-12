@@ -8,7 +8,7 @@ public class Order implements Comparable<Order> {
     private final boolean isVIP;
     private final static AtomicLong serialNumGenerator = new AtomicLong(0L);
     private final long serialNum;
-    private final Instant current_timestamp;
+    private final Instant orderDate;
 
 
     /**
@@ -31,13 +31,13 @@ public class Order implements Comparable<Order> {
         this.amount = amount;
         this.isVIP = customerID < 1000 ? true : false;
         this.serialNum = serialNumGenerator.getAndIncrement();
-        this.current_timestamp = Instant.now();
+        this.orderDate = Instant.now();
     }
 
     @Override
     public String toString() {
-        return String.format("VIP: %s CustomerID: %s Amount: %s SerialNumber : %s SecondsInQueue: %s%n",
-                isVIP(), getCustomerID(), getAmount(), getSerialNum(), getMillisecondsInQueue());
+        return String.format("VIP: %s CustomerID: %s Amount: %s SerialNumber : %s%n",
+                isVIP(), getCustomerID(), getAmount(), getSerialNum());
     }
 
     @Override
@@ -75,7 +75,7 @@ public class Order implements Comparable<Order> {
         return serialNum;
     }
 
-    public long getMillisecondsInQueue() {
-        return Duration.between(Instant.now(), this.current_timestamp).toMillis() / 1000;
+    public Instant getOrderDate() {
+        return orderDate;
     }
 }

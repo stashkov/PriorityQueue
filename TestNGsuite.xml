@@ -15,4 +15,16 @@
         </classes>
     </test>
 
+    <test name="Cart">
+        <classes>
+            <class name="CartTest"/>
+        </classes>
+    </test>
+
+    <test name="Distributor">
+        <classes>
+            <class name="DistributorTest"/>
+        </classes>
+    </test>
+
 </suite>

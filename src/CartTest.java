@@ -1,14 +1,13 @@
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.testng.Assert.*;
 
 public class CartTest {
 
     @Test
     public void testCartCorrectInstance() {
         try {
-            new Cart(55);
+            new Cart(20);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -24,17 +23,55 @@ public class CartTest {
     }
 
 
-
     @Test
-    public void testCartIsGonnaFit() {
-        Cart cart = new Cart(10);
-        // TODO amount > capacity catch error
-        // TODO is going to fit
-        // TODO is not going to fit
-//        assertEquals(1, o.getCustomerID());
+    public void testCartAmountGreaterThanCapacity() {
+        try {
+            Cart cart = new Cart(20);
+            cart.isGoingToFitThenAdd(21);
+        } catch (IllegalArgumentException e) {
+        }
     }
 
+    @Test
+    public void testCartAmountLessThanCapacity() {
+        try {
+            Cart cart = new Cart(20);
+            cart.isGoingToFitThenAdd(19);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
 
+    @Test
+    public void testCartAmountExactlyEqualCapacity() {
+        try {
+            Cart cart = new Cart(20);
+            cart.isGoingToFitThenAdd(20);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
 
+    @Test
+    public void testCartIsFull() {
+        Cart cart = new Cart(20);
+        cart.isGoingToFitThenAdd(20);
+        assertEquals(cart.isFull(), false);
 
+    }
+
+    @Test
+    public void testCartQuantityInside() {
+        Cart cart = new Cart(20);
+        cart.isGoingToFitThenAdd(15);
+        assertEquals(cart.getQuantity(), 15);
+
+    }
+    @Test
+    public void testEmptyCart() {
+        Cart cart = new Cart(20);
+        cart.isGoingToFitThenAdd(15);
+        cart.emptyCart();
+        assertEquals(cart.getQuantity(), 0);
+    }
 }
