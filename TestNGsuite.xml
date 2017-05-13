@@ -3,12 +3,6 @@
 
 <suite name="Suite1">
 
-    <test name="DuckQueue1">
-        <classes>
-            <class name="DuckQueue1Test"/>
-        </classes>
-    </test>
-
     <test name="com.example.jersey.Order">
         <classes>
             <class name="com.example.jersey.OrderTest"/>
@@ -23,7 +17,14 @@
 
     <test name="com.example.jersey.Distributor">
         <classes>
-            <class name="DistributorTest"/>
+            <class name="com.example.jersey.DistributorTest"/>
+        </classes>
+    </test>
+
+
+    <test name="com.example.jersey.DuckQueue">
+        <classes>
+            <class name="com.example.jersey.DuckQueueTest"/>
         </classes>
     </test>
 
