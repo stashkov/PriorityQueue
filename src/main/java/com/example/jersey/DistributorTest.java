@@ -4,6 +4,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+
 import static org.testng.Assert.*;
 
 
@@ -46,14 +48,14 @@ public class DistributorTest {
         assertEquals(minutes , 0);
     }
 
-    @Test
-    public void testWaitTimeVIPOnlyTwoIterationsTwoOrders() {
-        int customerID = 2;
-        d.placeOrder(1, 20);
-        d.placeOrder(customerID, 20);
-        Order o = DuckQueue.getOrderByCustomerID(customerID);
-        assertEquals(d.getApproximateWaitTime(o) * MINUTES , 5);
-    }
+//    @Test
+//    public void testWaitTimeVIPOnlyTwoIterationsTwoOrders() {
+//        int customerID = 2;
+//        d.placeOrder(1, 20);
+//        d.placeOrder(customerID, 20);
+//        Order o = DuckQueue.getOrderByCustomerID(customerID);
+//        assertEquals(d.getApproximateWaitTime(o) * MINUTES , 5);
+//    }
 
     @Test
     public void testWaitTimeRegularOnlyOneIteration() {
@@ -72,16 +74,39 @@ public class DistributorTest {
         assertEquals(d.getApproximateWaitTime(o) , 0);
     }
 
+//    @Test
+//    public void testWaitTimeRegularOnlyTwoIterationsTwoOrders() {
+//        int customerID = 20000;
+//        d.placeOrder(10000, 20);
+//        d.placeOrder(customerID, 20);
+//        Order o = DuckQueue.getOrderByCustomerID(customerID);
+//        assertEquals(d.getApproximateWaitTime(o) * MINUTES , 5);
+//    }
+
     @Test
-    public void testWaitTimeRegularOnlyTwoIterationsTwoOrders() {
-        int customerID = 20000;
-        d.placeOrder(10000, 20);
+    public void testCancelOrderByCustomerID(){
+        int customerID = 1;
         d.placeOrder(customerID, 20);
-        Order o = DuckQueue.getOrderByCustomerID(customerID);
-        assertEquals(d.getApproximateWaitTime(o) * MINUTES , 5);
+        d.cancelOrderByCustomerID(customerID);
+        String emptyJSON = "{}";
+        assertEquals(d.managerView(), emptyJSON);
     }
 
-//    @Test
+    @Test
+    public void testGetNextORder(){
+        d.placeOrder(1, 20);
+        d.getNextOrder();
+        String emptyJSON = "{}";
+        assertEquals(d.managerView(), emptyJSON);
+    }
+
+    @Test
+    public void testPlaceOrderOnline(){
+        d.placeOrderOnline(1, 20);
+        d.getNextOrder();
+        String emptyJSON = "{}";
+        assertEquals(d.managerView(), emptyJSON);
+    }
 
 
 }

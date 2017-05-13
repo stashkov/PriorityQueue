@@ -7,14 +7,18 @@ public class DuckQueue extends LinkedList<Order> {
     public static Map<Integer, Order> map;
     public static int itemsInQueue;
     public static int itemsInVIPQueue;
+    public static int itemsInRegularQueue;
     public static int customersInVIPQueue;
+    public static int customersInRegularQueue;
 
 
     public DuckQueue() {
         map = new HashMap<>();
         itemsInQueue = 0;
         itemsInVIPQueue = 0;
+        itemsInRegularQueue = 0;
         customersInVIPQueue = 0;
+        customersInRegularQueue = 0;
     }
 
 
@@ -59,6 +63,9 @@ public class DuckQueue extends LinkedList<Order> {
         if (order.isVIP()) {
             itemsInVIPQueue += order.getAmount();
             customersInVIPQueue++;
+        }else{
+            itemsInRegularQueue += order.getAmount();
+            customersInRegularQueue++;
         }
     }
 
@@ -67,6 +74,9 @@ public class DuckQueue extends LinkedList<Order> {
         if (order.isVIP()) {
             itemsInVIPQueue -= order.getAmount();
             customersInVIPQueue--;
+        }else {
+            itemsInRegularQueue -= order.getAmount();
+            customersInRegularQueue--;
         }
     }
 
@@ -87,9 +97,21 @@ public class DuckQueue extends LinkedList<Order> {
 
     public static Order getOrderByCustomerID(int customerID) {
         Order o = map.get(customerID);
-        if (o == null)
-            throw new IllegalArgumentException("Requested CustomerID does not exist");
+//        if (o == null)
+//            throw new IllegalArgumentException("Requested CustomerID does not exist");
         return o;
     }
 
+    public static int getNumberOfCustomersInQueue(Order o) {
+        return o.isVIP() ? customersInVIPQueue : customersInRegularQueue;
+    }
+
+    public static int getNumberOfItemsInQueue(Order o) {
+        return o.isVIP() ? itemsInVIPQueue : itemsInRegularQueue;
+    }
+
+
+    public static int getCustomersInVIPQueue() {
+        return customersInVIPQueue;
+    }
 }
