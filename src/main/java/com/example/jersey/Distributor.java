@@ -95,7 +95,6 @@ public class Distributor {
     @Path("/order")
     @Produces(MediaType.APPLICATION_JSON)
     public String managerView() {
-        placeSomeOrders();
         return new Gson().toJson(queue.toString());
 
     }

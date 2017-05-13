@@ -48,25 +48,27 @@ public class DistributorTest {
 
     @Test
     public void testWaitTimeVIPOnlyTwoIterationsTwoOrders() {
-
+        int customerID = 2;
         d.placeOrder(1, 20);
-        d.placeOrder(2, 20);
-        Order o = DuckQueue.getOrderByCustomerID(2);
+        d.placeOrder(customerID, 20);
+        Order o = DuckQueue.getOrderByCustomerID(customerID);
         assertEquals(d.getApproximateWaitTime(o) * MINUTES , 5);
     }
 
     @Test
     public void testWaitTimeRegularOnlyOneIteration() {
-        d.placeOrder(10000, 10);
-        Order o = DuckQueue.getOrderByCustomerID(10000);
+        int customerID = 10000;
+        d.placeOrder(customerID, 10);
+        Order o = DuckQueue.getOrderByCustomerID(customerID);
         assertEquals(d.getApproximateWaitTime(o) , 0);
     }
 
     @Test
     public void testWaitTimeRegularOnlyOneIterationsTwoOrders() {
+        int customerID = 20000;
         d.placeOrder(10000, 10);
-        d.placeOrder(20000, 10);
-        Order o = DuckQueue.getOrderByCustomerID(20000);
+        d.placeOrder(customerID, 10);
+        Order o = DuckQueue.getOrderByCustomerID(customerID);
         assertEquals(d.getApproximateWaitTime(o) , 0);
     }
 
@@ -78,6 +80,9 @@ public class DistributorTest {
         Order o = DuckQueue.getOrderByCustomerID(customerID);
         assertEquals(d.getApproximateWaitTime(o) * MINUTES , 5);
     }
+
+    @Test
+
 
 }
 
