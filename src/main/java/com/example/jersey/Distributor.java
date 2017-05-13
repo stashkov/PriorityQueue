@@ -5,19 +5,23 @@ import javax.ws.rs.core.MediaType;
 
 import com.google.gson.*;
 
+/**
+ * This calss provides API to interact with a queue
+ */
+
 @Path("/api/")
 public class Distributor {
     private static final int CAPACITY = 25;
     public static final int MINUTES = 5;
     private static DuckQueue queue = new DuckQueue();
     private static Cart cart = new Cart(CAPACITY);
-//
+
 //    public Distributor() {
 //        queue = new DuckQueue();
 //        cart = new Cart(CAPACITY);
-    // test doesn't work if I define constructor here
-    // but if I do then REST redifines it every time
-    // TODO looks like I have to move REST part out of here
+////     TODO looks like I have to move REST part out of here
+////     unit test do not work if I define constructor here
+////     but if I do then REST re-defines it every time
 //    }
 
 
@@ -29,23 +33,6 @@ public class Distributor {
         datasets.add(generateLinksForJSON("/orders", "delete", "DELETE"));
         orders.add("Links", datasets);
         return new Gson().toJson(orders);
-    }
-
-    public void pickUpOrders() {
-        while (!cart.isFull() && !queue.isEmpty()) {
-            Order o = queue.peek();
-            if (cart.isGoingToFitThenAdd(o.getAmount()))
-                queue.remove(o);
-        }
-        cart.emptyCart();
-    }
-
-    private static void sleepFiveMin() {
-        try {
-            Thread.sleep(10000);  // 1000 * 60 * 5 = 5 min
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     @GET  // can be @POST @Consumes("application/json")
@@ -75,6 +62,56 @@ public class Distributor {
 
     }
 
+    @GET
+    @Path("/orders")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String managerView() {
+        JsonObject orders = new JsonObject();
+        JsonArray datasets = new JsonArray();
+        for (Order o : queue) {
+            JsonObject dataset = getOrderInfo(o);
+            datasets.add(dataset);
+            orders.add("orders", datasets);
+        }
+        return new Gson().toJson(orders);
+
+    }
+
+    @DELETE
+    @Path("/orders/{customerID}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String cancelOrderByCustomerID(@PathParam("customerID") int customerID) {
+        Order o = DuckQueue.getOrderByCustomerID(customerID);
+        if (o != null)
+            queue.remove(o);
+        return new Gson().toJson("order was removed successfully");
+    }
+
+    @DELETE
+    @Path("/orders")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getNextOrder() {
+        Order o = null;
+        JsonObject orders = new JsonObject();
+        JsonArray datasets = new JsonArray();
+        while (!cart.isFull() && !queue.isEmpty()) {
+            System.out.println("omg");
+            o = queue.peek();
+            if (cart.isGoingToFitThenAdd(o.getAmount())) {
+                queue.remove(o);
+                JsonObject dataset = getOrderInfo(o);
+                datasets.add(dataset);
+                orders.add("orders", datasets);
+            }
+        }
+        cart.emptyCart();
+
+        if (o == null)
+            return new Gson().toJson("");
+        else
+            return new Gson().toJson(orders);
+    }
+
     private JsonArray getJsonSpecificOrderForCustomer(Order o) {
         JsonArray datasets = new JsonArray();
         JsonObject dataset = new JsonObject();
@@ -95,53 +132,36 @@ public class Distributor {
         return queue.indexOf(o) + 1;
     }
 
-    @GET
-    @Path("/orders")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String managerView() {
-        JsonObject orders = new JsonObject();
-        JsonArray datasets = new JsonArray();
-        for (Order o : queue) {
-            JsonObject dataset = getOrderInfo(o);
-            datasets.add(dataset);
-            orders.add("orders", datasets);
-        }
-        return new Gson().toJson(orders);
-
-    }
-
     private JsonObject getOrderInfo(Order o) {
         JsonObject dataset = new JsonObject();
-        double waitTime = getApproximateWaitTime(o) * MINUTES;
         dataset.addProperty("customer_id", o.getCustomerID());
         dataset.addProperty("amount", o.getAmount());
+        generateAdditionalOrderInfo(o, dataset);
+        generateLinksForEachOrder(o, dataset);
+        return dataset;
+    }
 
-
-        JsonArray info = new JsonArray();
-        dataset.add("info", info);
-
-        JsonObject info1 = new JsonObject();
-        info1.addProperty("vip", o.isVIP());
-        info1.addProperty("position_in_queue", getPositionInQueue(o));
-        info1.addProperty("approx_wait_time_minutes", waitTime);
-        info1.addProperty("order_id", o.getSerialNum());
-        info.add(info1);
-
-
-
+    private void generateLinksForEachOrder(Order o, JsonObject dataset) {
         JsonArray links = new JsonArray();
         dataset.add("Links", links);
-
         String s;
         s = "/orders/" + o.getCustomerID();
         links.add(generateLinksForJSON(s, "self", "GET"));
         links.add(generateLinksForJSON(s, "delete", "DELETE"));
         s += "/amount/" + o.getAmount();
         links.add(generateLinksForJSON(s, "create", "GET"));
+    }
 
-
-
-        return dataset;
+    private void generateAdditionalOrderInfo(Order o, JsonObject dataset) {
+        JsonArray info = new JsonArray();
+        dataset.add("info", info);
+        JsonObject info1 = new JsonObject();
+        double waitTime = getApproximateWaitTime(o) * MINUTES;
+        info1.addProperty("vip", o.isVIP());
+        info1.addProperty("position_in_queue", getPositionInQueue(o));
+        info1.addProperty("approx_wait_time_minutes", waitTime);
+        info1.addProperty("order_id", o.getSerialNum());
+        info.add(info1);
     }
 
     private JsonObject generateLinksForJSON(String value, String self, String method) {
@@ -153,30 +173,29 @@ public class Distributor {
         return link;
     }
 
-    @DELETE
-    @Path("/orders/{customerID}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String cancelOrderByCustomerID(@PathParam("customerID") int customerID) {
-        Order o = DuckQueue.getOrderByCustomerID(customerID);
-        if (o != null)
-            queue.remove(o);
-        return new Gson().toJson("order was removed successfully");
+    public void pickUpOrders() {
+        while (!cart.isFull() && !queue.isEmpty()) {
+            Order o = queue.peek();
+            if (cart.isGoingToFitThenAdd(o.getAmount()))
+                queue.remove(o);
+        }
+        cart.emptyCart();
     }
 
-    @DELETE
-    @Path("/orders")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getNextOrder() {
-        Order o = queue.remove();
-        return new Gson().toJson(o.toString());
+    public void getNextOrdersUntilQueueIsEmpty() {
+        while (!queue.isEmpty()) {
+            pickUpOrders();
+            sleepFiveMin();
+        }
     }
 
-
-    //    public void getNextOrder() {
-//        while (!queue.isEmpty()) {
-//            pickUpOrders();
-//        }
-//    }
+    private static void sleepFiveMin() {
+        try {
+            Thread.sleep(10000);  // 1000 * 60 * 5 = 5 min
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 
 
     public int getTotalWaitTimeVIP() {
@@ -206,7 +225,4 @@ public class Distributor {
         int size = DuckQueue.getNumberOfCustomersInQueue(o);
         return (double) position / size;
     }
-
-
 }
-

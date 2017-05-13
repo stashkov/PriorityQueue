@@ -107,9 +107,4 @@ public class DistributorTest {
         String emptyJSON = "{}";
         assertEquals(d.managerView(), emptyJSON);
     }
-
-
 }
-
-
-

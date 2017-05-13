@@ -11,7 +11,10 @@ public class DuckQueue extends LinkedList<Order> {
     public static int customersInVIPQueue;
     public static int customersInRegularQueue;
 
-
+    /**
+     * Class represent a queue with orders
+     * It provides variety of information about the queue
+     */
     public DuckQueue() {
         map = new HashMap<>();
         itemsInQueue = 0;
@@ -97,6 +100,9 @@ public class DuckQueue extends LinkedList<Order> {
 
     public static Order getOrderByCustomerID(int customerID) {
         Order o = map.get(customerID);
+        // was useful when troubleshooting locally
+        // but because it now serves REST I cannot show errors
+        // showing different information on incorrect data is not exactly best practice
 //        if (o == null)
 //            throw new IllegalArgumentException("Requested CustomerID does not exist");
         return o;
