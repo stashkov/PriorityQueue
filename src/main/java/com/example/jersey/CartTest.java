@@ -57,10 +57,12 @@ public class CartTest {
     @Test
     public void testCartIsFull() {
         Cart cart = new Cart(20);
-        cart.isGoingToFitThenAdd(20);
-        assertEquals(cart.isFull(), false);
+        cart.isGoingToFitThenAdd(15);
+        cart.isGoingToFitThenAdd(6);
+        assertEquals(cart.isFull(), true);
 
     }
+
 
     @Test
     public void testCartQuantityInside() {
