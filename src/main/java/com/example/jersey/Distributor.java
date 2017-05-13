@@ -115,15 +115,9 @@ public class Distributor {
     private JsonArray getJsonSpecificOrderForCustomer(Order o) {
         JsonArray datasets = new JsonArray();
         JsonObject dataset = new JsonObject();
-
         double waitTime = getApproximateWaitTime(o) * MINUTES;
-//      dataset.addProperty("order_id", o.getSerialNum());
-//      dataset.addProperty("customer_id", o.getCustomerID());
-//      dataset.addProperty("vip", o.isVIP());
-//      dataset.addProperty("amount", o.getAmount());
         dataset.addProperty("position_in_queue", getPositionInQueue(o));
         dataset.addProperty("approx_wait_time_minutes", waitTime);
-
         datasets.add(dataset);
         return datasets;
     }

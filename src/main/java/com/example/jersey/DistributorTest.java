@@ -107,4 +107,36 @@ public class DistributorTest {
         String emptyJSON = "{}";
         assertEquals(d.managerView(), emptyJSON);
     }
+
+    @Test
+    public void testGetUser(){
+        d.placeOrderOnline(1, 20);
+        String j = "{\"Links\":" +
+                "[{\"href\":\"/orders\"," +
+                "\"rel\":\"list\"," +
+                "\"method\":\"GET\"}," +
+                "{\"href\":\"/orders\"," +
+                "\"rel\":\"delete\"," +
+                "\"method\":\"DELETE\"}]}";
+        assertEquals(d.getUser(), j);
+    }
+
+//    @Test
+//    public void testManagerView(){
+//        d.placeOrderOnline(1, 20);
+//        // this is horrible
+//        String j = "{\"orders\":" +
+//                "[{\"customer_id\":1" +
+//                ",\"amount\":20,\"info\"" +
+//                ":[{\"vip\":true,\"positio" +
+//                "n_in_queue\":1,\"approx_wait" +
+//                "_time_minutes\":0.0,\"order_id\":" +
+//                "0}],\"Links\":[{\"href\":\"/orde" +
+//                "rs/1\",\"rel\":\"self\",\"method\"" +
+//                ":\"GET\"},{\"href\":\"/orders/1\"," +
+//                "\"rel\":\"delete\",\"method\":\"DEL" +
+//                "ETE\"},{\"href\":\"/orders/1/amoun" +
+//                "t/20\",\"rel\":\"create\",\"method\":\"GET\"}]}]}";
+//        assertEquals(d.managerView(), j);
+//    }
 }
