@@ -6,7 +6,7 @@ public class Order implements Comparable<Order>
     private final int _CUSTOMER_ID;
     private final int _AMOUNT;
     private final boolean _IS_VIP;
-    private final static AtomicLong TOTAL_ORDERS = new AtomicLong( 0L );
+    private final static AtomicLong _TOTAL_ORDERS = new AtomicLong( 0L );
     private final long _ORDER_ID;
     private final Instant _CURRENT_TIMESTAMP;
     private static final int _ORDER_AMOUNT_LIMIT = 25;
@@ -30,15 +30,15 @@ public class Order implements Comparable<Order>
 
         _CUSTOMER_ID = customerID;
         _AMOUNT = amount;
-        _IS_VIP = customerID < 1000;
-        _ORDER_ID = TOTAL_ORDERS.incrementAndGet();
+        _IS_VIP = customerID < 5;
+        _ORDER_ID = _TOTAL_ORDERS.incrementAndGet();
         _CURRENT_TIMESTAMP = Instant.now();
     }
 
     @Override
     public String toString()
     {
-        return String.format( "VIP: %s CustomerID: %s Amount: %s OrderID : %s SecondsInQueue: %s%n",
+        return String.format( "VIP: %5s CustomerID: %2d Amount: %2d OrderID : %3d SecondsInQueue: %2d",
                 isVIP(), getCustomerID(), getAmount(), getOrderID(), getMillisecondsInQueue() );
     }
 
@@ -50,10 +50,10 @@ public class Order implements Comparable<Order>
         {
             return result;
         }
-        return compareSerialNumber( order );
+        return compareOrderID( order );
     }
 
-    private int compareSerialNumber( Order order )
+    private int compareOrderID( Order order )
     {
         return Long.compare( _ORDER_ID, order.getOrderID() );
     }
@@ -85,6 +85,6 @@ public class Order implements Comparable<Order>
 
     public long getMillisecondsInQueue()
     {
-        return Instant.now().toEpochMilli() - _CURRENT_TIMESTAMP.toEpochMilli();
+        return ( Instant.now().toEpochMilli() - _CURRENT_TIMESTAMP.toEpochMilli() ) / 1000;
     }
 }
